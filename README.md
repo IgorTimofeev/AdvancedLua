@@ -9,7 +9,7 @@ AdvancedLua is a library that forfills default Lua and OpenOS libraries with mis
 | [Table library additions](#table-library-additions) |
 | [String library additions](#string-library-additions) |
 | [Math library additions](#math-library-additions) |
-| [Filesystem (OpenOS) library additions](#filesystem-openos-library0additions) |
+| [Filesystem (OpenOS) library additions](#filesystem-openos-library-additions) |
 
 Installation
 ======

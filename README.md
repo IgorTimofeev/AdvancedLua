@@ -1,5 +1,6 @@
 About
 ======
+
 AdvancedLua is a library that forfills default Lua and OpenOS libraries with missing, but extremely necessary in everyday life functions: fast serialization of tables, detection of the current executable script, line wrapping, rounding of numbers, getting sorted file lists, various methods of processing binary data, etc.
 
 | Contents |
@@ -16,7 +17,7 @@ Installation
 
 Source code is available [here](https://github.com/IgorTimofeev/AdvancedLua/blob/master/lib/AdvancedLua.lua): You can download library to computer via single command:
 
-    wget https://raw.githubusercontent.com/IgorTimofeev/OpenComputers/master/lib/advancedLua.lua /lib/advancedLua.lua -f
+    wget https://github.com/IgorTimofeev/AdvancedLua/blob/master/lib/AdvancedLua.lua /lib/advancedLua.lua -f
 
 Global functions
 ======
@@ -91,8 +92,7 @@ table.**unserialize**( text ): *table or nil* result, *string* reason
 | ------ | ------ | ------ |
 | *string* | text | Serialized string |
 
-Method deserializes string representation of Lua table and returns result.
-Метод пытается десериализовать строковое представление lua-таблицы и вернуть результат. If this is not possible, **nil** and the string with the reason of syntax error are returned. For example, let's perform the simplest deserialization:
+Method deserializes string representation of Lua table and returns result. If this is not possible, **nil** and the string with the reason of syntax error are returned. For example, let's perform the simplest deserialization:
 
 ```lua
 local result = table.unserialize("{ abc = 123 }")

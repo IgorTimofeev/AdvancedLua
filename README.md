@@ -1,80 +1,55 @@
-| Содержание |
+About
+======
+AdvancedLua is a library that forfills default Lua and OpenOS libraries with missing, but extremely necessary in everyday life functions: fast serialization of tables, detection of the current executable script, line wrapping, rounding of numbers, getting sorted file lists, various methods of processing binary data, etc.
+
+| Contents |
 | ----- |
-| [О библиотеке](#О-библиотеке) |
-| [Установка](#Установка) |
-| [Глобальные функции](#Глобальные-функции) |
-| [Дополнения библиотеки table](#Дополнения-библиотеки-table) |
-| [Дополнения библиотеки string](#Дополнения-библиотеки-string) |
-| [Дополнения библиотеки math](#Дополнения-библиотеки-math) |
-| [Дополнения библиотеки filesystem (OpenOS)](#Дополнения-библиотеки-filesystem-openos) |
+| [Installation](#installation) |
+| [Global functions](#global-functions) |
+| [Table library additions](#table-library-additions) |
+| [String library additions](#string-library-additions) |
+| [Math library additions](#math-library-additions) |
+| [Filesystem (OpenOS) library additions](#filesystem-openos-library0additions) |
 
-О библиотеке
-======
-AdvancedLua - библиотека, дополняющая стандартные библиотеки Lua и OpenOS отсутствующими, однако крайне необходимыми в быту функциями: быстрой сериализацией таблиц, определением текущего исполняемого скрипта, переносом строк, округлением чисел, получением сортированных файловых списков, различными методами обработки бинарных данных и т.п. 
-
-Установка
+Installation
 ======
 
-Исходный код доступен по ссылке: https://github.com/IgorTimofeev/OpenComputers/blob/master/lib/advancedLua.lua
+Source code is available [here](https://github.com/IgorTimofeev/AdvancedLua/blob/master/lib/AdvancedLua.lua): You can download library to computer via single command:
 
-Для загрузки на компьютер вы можете воспользоваться стандартной утилитой **wget**:
+    wget https://raw.githubusercontent.com/IgorTimofeev/OpenComputers/master/lib/advancedLua.lua /lib/advancedLua.lua -f
 
-    wget https://raw.githubusercontent.com/IgorTimofeev/OpenComputers/master/lib/advancedLua.lua -f
-
-Глобальные функции
+Global functions
 ======
 
 **getCurrentScript**( ): *string* path
 -----------------------------------------------------------
 
-Функция возвращает путь к текущему исполняемому скрипту. Для примера запустим файл **/Test/Main.lua** со следующим содержимым:
+Get path to currently running script. For example, let's launch **/Test/Main.lua** with following data:
 
 ```lua
-print("Путь к текущему скрипту: " .. getCurrentScript())
+print("Path to current script: " .. getCurrentScript())
 ```
-В результате на экране будет отображен тот самый путь:
+
+And the path to this script will be shown on screen:
 
 ```lua
-Путь к текущему скрипту: /Test/Main.lua
+Path to current script: /Test/Main.lua
 ```
 
-**enum**( ... ): *table* result
------------------------------------------------------------
-
-Функция принимает строковые аргументы и возвращает таблицу с этими аргументами в виде ключей, а также с их порядковым номером в виде значений. Данная функция создана для удобства, когда нет желания вручную изменять значения полей на нужные:
-
-```lua
-local alignment = enum(
-	"left",
-	"center",
-	"right"
-)
-```
-
-В результате таблица alignment будет иметь следующий вид:
-
-```lua
-{
-	left = 1,
-	center = 2,
-	right = 3
-}
-```
-
-Дополнения библиотеки table
+Table library additions
 ======
 
 table.**serialize**( t, [ pretty, indentationWidth, indentUsingTabs, recursionStackLimit ] ): *string* result
 -----------------------------------------------------------
-| Тип | Аргумент | Описание |
+| Type | Parameter | Description |
 | ------ | ------ | ------ |
-| *table* | t | Таблица, которую необходимо сериализовать |
-| *boolean* | pretty | Опциональный аргумент, сериализующий таблицу для наилучшего визуального восприятия человеком. По умолчанию имеет значение false |
-| *int* | indentationWidth | Опциональный аргумент, отвечающий за ширину отступа в символах при сериализации в режиме **pretty** |
-| *boolean* | indentUsingTabs | Опциональный аргумент, отвечающий за выбор символа отступа при сериализации в режиме **pretty**. По умолчанию имеет значение false |
-| *int* | recursionStackLimit | Опциональный аргумент, отвечающий за ограничение стека рекурсии при сериализации таблиц большого размера |
+| *table* | t | Table for serializing |
+| [*boolean* | pretty] | Optional argument for simplier human-reading serializing. It has **false** value by default |
+| [*int* | indentationWidth] | Optional argument that specifies indentation size in symbols when **pretty** mode is enabled |
+| [*boolean* | indentUsingTabs] | Optional argument for using **tab** characters instead of whitespace when **pretty** mode is enabled |
+| [*int* | recursionStackLimit] | Optional argument for limitation recursion stack depth |
 
-Метод изначально создавался в качестве быстрой альтернативы **/lib/serialization.lua**, поставляемой OpenOS. Он преобразует содержимое таблицы в строку и крайне удобен для сохранения конфигов различного ПО в понятном для человека виде с сохранением исходной структуры таблицы. Для примера рассмотрим следующий код:
+The method was originally created as a fast alternative to OpenOS **/lib/serialization.lua**. It converts the contents of specified table to a string and it's is extremely convenient for saving configs for various software. Let's run following script for example:
 
 ```lua
 local myTable = {
@@ -87,17 +62,17 @@ local myTable = {
 	}
 }
 
-print("Обычная сериализация: " .. table.serialize(myTable))
+print("Regular serialization: " .. table.serialize(myTable))
 print(" ")
-print("Красивая сериализация: " .. table.serialize(myTable, true))
+print("Pretty serialization: " .. table.serialize(myTable, true))
 ``` 
 
-В результате выполнения скрипта на экране будет отображена сериализованная структура таблицы :
+Result:
 
 ```lua
-Обычная сериализация: {[1]="Hello",[2]="world",["abc"]=123,["def"]="456",["ghi"]={["jkl"]=true}}
+Regular serialization: {[1]="Hello",[2]="world",["abc"]=123,["def"]="456",["ghi"]={["jkl"]=true}}
 
-Красивая сериализация: {
+Pretty serialization: {
 	[1] = "Hello",
 	[2] = "world",
 	abc = 123,
@@ -108,21 +83,22 @@ print("Красивая сериализация: " .. table.serialize(myTable, 
 }
 ```
 
-Обращаю ваше внимание, что аргумент **pretty** выполняет несколько дополнительных проверок на тип ключей и значений таблицы, а также генерирует символы переноса строки после каждого значения. Поэтому используйте его только в том случае, когда читабельность результата стоит в приоритете над производительностью.
+I draw your attention that the **pretty** argument performs several additional checks on the type of keys and table values, and also generates the line break after each value. Therefore, use it only if the readability of the result is in priority over performance.
 
 table.**unserialize**( text ): *table or nil* result, *string* reason
 -----------------------------------------------------------
-| Тип | Аргумент | Описание |
+| Type | Parameter | Description |
 | ------ | ------ | ------ |
-| *string* | text | Строка, созданная методом table.**serialize**()  |
+| *string* | text | Serialized string |
 
-Метод пытается десериализовать строковое представление lua-таблицы и вернуть результат. Если это невозможно, то возвращается nil и строка с причиной синтаксической ошибки. Для примера выполним простейшую десериализацию:
+Method deserializes string representation of Lua table and returns result.
+Метод пытается десериализовать строковое представление lua-таблицы и вернуть результат. If this is not possible, **nil** and the string with the reason of syntax error are returned. For example, let's perform the simplest deserialization:
 
 ```lua
 local result = table.unserialize("{ abc = 123 }")
 ```
 
-В результате таблица result будет иметь следующий вид:
+The result table will look like this:
 
 ```lua
 {
@@ -132,97 +108,97 @@ local result = table.unserialize("{ abc = 123 }")
 
 table.**toFile**( path, ... )
 -----------------------------------------------------------
-| Тип | Аргумент | Описание |
+| Type | Parameter | Description |
 | ------ | ------ | ------ |
-| *string* | path | Путь к файлу, в который необходимо записать сериализованный результат |
-| - | ... | Множество аргументов, принимаемых функцией table.**serialize**(...) |
+| *string* | path | The path to the file in which you want to write serialized result |
+| - | ... | The set of parameters accepted by the function table.**serialize**(...) |
 
-Метод аналогичен table.**serialize**(...), однако вместо возвращения строкового результата записывает его в файл. Он крайне удобен для быстрого сохранения конфига ПО без излишних заморочек.
+The method is similar to table .**serialize**(...), but instead of returning a string result, it writes it to a file. It is extremely convenient for quickly saving the config of the software without unnecessary stuff.
 
 table.**fromFile**( path ): *string* result
 -----------------------------------------------------------
-| Тип | Аргумент | Описание |
+| Type | Parameter | Description |
 | ------ | ------ | ------ |
-| *string* | path | Путь к файлу, содержимое которого необходимо десериализовать |
+| *string* | path | The path to the file whose contents you want to deserialize |
 
-Метод аналогичен table.**unserialize**(...), однако строковое содержимое он читает напрямую из существующего файла, возвращая десериализованный результат. Опять же, по большей части он применяется для удобной загрузки конфигов ПО.
+The method is similar to table .**serialize**(...), but it reads string content directly from the existing file, returning the deserialized result. Again, for the most part it is used to conveniently download software configurations.
 
 table.**size**( t ): *int* result
 -----------------------------------------------------------
-| Тип | Аргумент | Описание |
+| Type | Parameter | Description |
 | ------ | ------ | ------ |
-| *table* | t | Таблица, число ключей которой необходимо вычислить |
+| *table* | t | Table, the number of keys you want to calculate |
 
-Метод возвращает число ключей переданной таблицы. Отличается от варианта **#t** тем, что подсчитывает также ненумерические индексы
+The method returns the number of keys of the passed table. It differs from the **#t** variant, i.e. it also counts non-numerical indexes
 
 table.**contains**( t, object ): *boolean* result
 -----------------------------------------------------------
-| Тип | Аргумент | Описание |
+| Type | Parameter | Description |
 | ------ | ------ | ------ |
-| *table* | t | Таблица, в которой будет осуществлен поиск объекта |
-| *var* | object | Объект, наличие которого в таблице необходимо проверить |
+| *table* | t | Table in which the object will be searched |
+| *var* | object | The object which presence in the table needs to be checked |
 
-Метод определяет, присутствует ли объект в таблице и возвращает результат
+The method determines whether the object is present in the table and returns the result
 
 table.**indexOf**( t, object ): *var* result
 -----------------------------------------------------------
-| Тип | Аргумент | Описание |
+| Type | Parameter | Description |
 | ------ | ------ | ------ |
-| *table* | t | Таблица, в которой будет осуществлен поиск объекта |
-| *var* | object | Объект, индекс которого необходимо определить |
+| *table* | t | Table in which the object will be searched |
+| *var* | object | The object whose index is to be determined |
 
-Метод возвращает индекс (ключ) переданного объекта. Тип индекса может быть различным в зависимости от структуры таблицы: к примеру, в таблице {abc = 123} число 123 имеет строковый индекс abc
+The method returns the index (key) of the passed object. The index type can be different depending on the table structure: for example, in the table {abc = 123} the number 123 has a *string* index abc
 
 table.**copy**( t ): *table* result
 -----------------------------------------------------------
-| Тип | Аргумент | Описание |
+| Type | Parameter | Description |
 | ------ | ------ | ------ |
-| *table* | t | Таблица, которую необходимо сдублирвать |
+| *table* | t | The table that needs to be duplicated |
 
-Метод рекурсивно копирует содержимое таблицы t в новую и возвращает результат. Обращаю внимание на то, что таблицы, ссылающиеся сами на себя, не поддерживаются (ограничение стека рекурсии по аналогии с table.**serialize**() пилить было оч оч лень, прости <3)
+The method recursively copies the contents of table **t** to a new one and returns the result. I draw your attention to the fact that tables referencing themselves are not supported (I was to lazy to make support for limiting the recursion stack depth by analogy with table .**serialize**(), sorry <3)
 
-Дополнения библиотеки string
+String library additions
 ======
 
 string.**limit**( s, limit, mode, noDots ): *string* result
 -----------------------------------------------------------
-| Тип | Аргумент | Описание |
+| Type | Parameter | Description |
 | ------ | ------ | ------ |
-| *string* | s | Строка, длину которой необходимо ограничить |
-| *int* | limit | Максимальная длину строки |
-| *string* | mode | Режим ограничения для вставки символа многоточия. Может принимать значения **left**, **center** или **right** |
-| *boolean* | noDots | Режим ограничения строки классической обрезкой без использования символа многоточия |
+| *string* | s | A string whose length should be limited |
+| *int* | limit | Maximum string length |
+| *string* | mode | The limitation mode for inserting an "..." symbol. It can take the values **left**, **center** or **right** |
+| *boolean* | noDots | The mode of limitting by classical trimming without using the "..." symbol |
 
-Метод ограничивает строку, вставляя символ многоточия в необходимом месте и возвращая результат. Для примера запустим код:
-
-```lua
-print("Ограничение слева: " .. string.limit("HelloBeautifulWorld", 10, "left"))
-print("Ограничение по центру: " .. string.limit("HelloBeautifulWorld", 10, "center"))
-print("Ограничение справа: " .. string.limit("HelloBeautifulWorld", 10, "right"))
-```
-
-В результате на экране будет отображено следующее:
+The method limits a string by inserting the "..." symbol in the correct location and returning the result. For example, let's run the code:
 
 ```lua
-Ограничение слева: …ifulWorld
-Ограничение по центру: Hello…orld
-Ограничение справа: HelloBeau…
+print("Left limit: " .. string.limit("HelloBeautifulWorld", 10, "left"))
+print("Center limit: " .. string.limit("HelloBeautifulWorld", 10, "center"))
+print("Right limit: " .. string.limit("HelloBeautifulWorld", 10, "right"))
 ```
 
-string.**wrap**( s, wrapWidth ): *table* result
+As a result, the following will be displayed:
+
+```lua
+Left limit: …ifulWorld
+Center limit: Hello…orld
+Right limit: HelloBeau…
+```
+
+string.**wrap**( s, wrapSize ): *table* result
 -----------------------------------------------------------
-| Тип | Аргумент | Описание |
+| Type | Parameter | Description |
 | ------ | ------ | ------ |
-| *string/string[]* | s | Строка либо массив строк, которые необходимо перенести по указанной длине |
-| *int* | wrapWidth | Максимальная длина строки, на которую следует ориентироваться при переносе |
+| *string/string[]* | s | A string or an table of strings that need to be moved to the specified length |
+| *int* | wrapSize | The wrapping length |
 
-Метод осуществляет перенос строки с указанным ограничением по длине и возвращает результат в виде таблицы. Если размер отдельно взятого слова превышает указанную длину, то слово будет "разрезано" на составляющие части.
+The method wraps a string with and returns the wrapped result as a table. If the size of a single word exceeds the specified length, the word will be "cut" into its constituent parts.
 
-Также поддерживаются символы **\n** для автоматического переноса каретки на новую строку.  Для примера рассмотрим код:
+Also **\n** characters are supported to automatically move the caret to a new line. Let's run following code:
 
 ```lua
-local limit = 20
-local text = "Привет, как дела? Сегодня отличный денек для выгула твоей вонючей псины, не так ли, Сэм?\n\nАх, ты уже не тот Сэм, с которым Фродо расплавил кольцо Саурона в самом сердце Роковой Горы"
+local limit = 24
+local text = "Those days, the Third Age of Middle-earth, are now long past, and the shape of all lands has been changed; but the regions in which Hobbits then lived were doubtless the same as those in which they still linger: the North-West of the Old World, east of the Sea."
 local lines = string.wrap(text, limit)
 
 print(string.rep("-", limit))
@@ -230,163 +206,156 @@ for i = 1, #lines do
 	print(lines[i])
 end
 ```
-В результате на экране будет отображен текст:
+
+As a result, the following will be displayed:
 
 ```lua
---------------------
-Привет, как дела?
-Сегодня отличный
-денек для выгула
-твоей вонючей псины,
-не так ли, Сэм?
-
-Ах, ты уже не тот
-Сэм, с которым Фродо
-расплавил кольцо
-Саурона в самом
-сердце Роковой Горы
+------------------------
+Those days, the Third
+Age of Middle-earth,
+are now long past, and
+the shape of all lands
+has been changed; but
+the regions in which
+Hobbits then lived were
+doubtless the same as
+those in which they
+still linger: the
+North-West of the Old
+World, east of the Sea.
 ```
-
 
 string.**unicodeFind**( ... ): ...
 -----------------------------------------------------------
-| Тип | Аргумент | Описание |
+| Type | Parameter | Description |
 | ------ | ------ | ------ |
-| - | ... | Множество аргументов, аналогичных таковым для функции string.**find**(...) |
+| - | ... | A set of arguments analogous to those for a string.**find**(...) function |
 
-Метод аналогичен string.**find**(...), однако позволяет работать с юникодом. Незаменимая штука для русскоговорящей аудитории!
+The method is similar to string .**find**(...), however it allows to work with unicode. Nice thing for a multilanguage-speaking people!
 
-Дополнения библиотеки math
+Math library additions
 ======
 
 math.**round**( number ): *float* result
 -----------------------------------------------------------
-| Тип | Аргумент | Описание |
+| Type | Parameter | Description |
 | ------ | ------ | ------ |
-| *float* | number | Число, которое необходимо округлить |
+| *float* | number | Number to be rounded |
 
-Метод округляет число до ближайшего целого и возвращает результат
+Method rounds the number to the nearest integer and returns the result
 
 math.**roundToDecimalPlaces**( number, decimalPlaces ): *float* result
 -----------------------------------------------------------
-| Тип | Аргумент | Описание |
+| Type | Parameter | Description |
 | ------ | ------ | ------ |
-| *float* | number | Число, которое необходимо округлить |
-| *int* | decimalPlaces | Число знаков после запятой у округляемого числа |
+| *float* | number | Number to be rounded |
+| *int* | decimalPlaces | The number of digits after the decimal point of the rounded number |
 
-Метод округляет число до ближайшего целого, лимитируя результат до указаннонного числа знаков после запятой и возвращает результат
+The method rounds the number to the nearest integer, limiting the result to the specified number of decimal places and returns the result
 
 math.**shorten**( number, decimalPlaces ): *string* result
 -----------------------------------------------------------
-| Тип | Аргумент | Описание |
+| Type | Parameter | Description |
 | ------ | ------ | ------ |
-| *int* | number | Число, которое необходимо визуально сократить |
-| *int* | decimalPlaces | Число знаков после запятой у результата |
+| *int* | number | The number to be visually shorten |
+| *int* | decimalPlaces |  The number of digits after the decimal point of the rounded number |
 
-Метод преобразует входное число в строку с приставками "**K**", "**M**", "**B**" и "**T**" в завимости от размера числа. Для примера выполним код:
+The method converts the input number to a string with the prefixes "**K**", "**M**", "**B**" or "**T**" in dependence on the size of the number. For example, let's execute the code:
 
 ```lua
-print("Сокращенный результат: " .. math.shortenNumber(13484381, 2))
+print("Shorten result: " .. math.shortenNumber(13484381, 2))
 ```
 
-В результате на экране отобразится следующее:
+As a result, the following will be displayed:
 
 ```lua
-Сокращенный результат: 13.48M
+Shorten result: 13.48M
 ```
 
-math.**getDigitCount**( number ): *int* digitCount
------------------------------------------------------------
-| Тип | Аргумент | Описание |
-| ------ | ------ | ------ |
-| *int* | number | Число, количество десятичных знаков которого необходимо вычислить |
-
-Метод возвращает количество десятичных знаков в числе. К примеру, в числе **512** их **3**, в числе **1888** их **4**
-
-Дополнения библиотеки bit32
+Bit32 library additions
 ======
 
 bit32.**merge**( number1, number2 ): *int* result
 -----------------------------------------------------------
-| Тип | Аргумент | Описание |
+| Type | Parameter | Description |
 | ------ | ------ | ------ |
-| *int* | number1 | Первое число для склейки |
-| *int* | number2 | Второе число для склейки |
+| *int* | number1 | First number for merging |
+| *int* | number2 | Second number for merging |
 
-Метод "склеивает" два числа и возвращает результат. К примеру, вызов метода с аргументами **0xAA** и **0xBB** вернет число **0xAABB**
+The method "merges" two numbers and returns the result. For example, calling a method with arguments **0xAA** and **0xBB** will return a number **0xAABB**
 
 bit32.**numberToByteArray**( number ) : *table* byteArray
 -----------------------------------------------------------
-| Тип | Аргумент | Описание |
+| Type | Parameter | Description |
 | ------ | ------ | ------ |
-| *int* | number | Число, которое необходимо преобразовать в байт-массив |
+| *int* | number | The number to be converted to a byte array |
 
-Метод извлекает составляющие байты из числа и возвращает таблицу с ними. К примеру, вызов метода с аргументом **0xAABBCC** вернет таблицу **{0xAA, 0xBB, 0xCC}**
+The method extracts the bytes from the number and returns a table with them. For example, calling a method with the argument **0xAABBCC** will return the table * {0xAA, 0xBB, 0xCC}**
 
 bit32.**numberToFixedSizeByteArray**( number, arraySize ) : *table* byteArray
 -----------------------------------------------------------
-| Тип | Аргумент | Описание |
+| Type | Parameter | Description |
 | ------ | ------ | ------ |
-| *int* | number | Число, которое необходимо преобразовать в байт-массив |
-| *int* | arraySize | Фиксированный размер выходного массива |
+| *int* | number | The number to be converted to a byte array |
+| *int* | arraySize | Fixed size of the output array |
 
-Метод аналогичен bit32.**numberToByteArray**(), однако размер выходного массива указывается вручную. Если количество байт в числе меньше указанного размера, то выходной массив будет дополнен отсутствующими нулями, в противном случае массив заполнится лишь частью байт числа. К примеру, вызов метода с аргументами **0xAABBCC** и **5** вернет таблицу **{0x00, 0x00, 0xAA, 0xBB, 0xCC}**
+The method is similar to bit32.**numberToByteArray**(), but the size of the output array is specified manually. If the number of bytes in the number is less than the specified size, then the output array will be supplemented with missing zeros, otherwise the array will be filled with only a part of the bytes of the number. For example, calling a method with arguments **0xAABBCC** and **5** will return the table **{0x00, 0x00, 0xAA, 0xBB, 0xCC}**
 
 bit32.**byteArrayToNumber**( byteArray ) : *int* number
 -----------------------------------------------------------
-| Тип | Аргумент | Описание |
+| Type | Parameter | Description |
 | ------ | ------ | ------ |
-| *int* | number | Байт-массив, который необходимо преобразовать в число |
+| *int* | number | A byte array that needs to be converted to a number |
 
-Метод преобразует байты из переданного массива в целое число. К примеру, вызов метода с аргументом **{0xAA, 0xBB, 0xCC}** вернет число **0xAABBCC**
+The method converts the bytes from the specified array to an integer. For example, calling a method with argument **{0xAA, 0xBB, 0xCC}** will return a number **0xAABBCC**
 
 bit32.**byteArrayToNumber**( byteArray ) : *int* number
 -----------------------------------------------------------
-| Тип | Аргумент | Описание |
+| Type | Parameter | Description |
 | ------ | ------ | ------ |
-| *int* | number | Байт-массив, который необходимо преобразовать в число |
+| *int* | number | A byte array that needs to be converted to a number |
 
-Метод преобразует байты из переданного массива в целое число. К примеру, вызов метода с аргументом **{0xAA, 0xBB, 0xCC}** вернет число **0xAABBCC**
+The method converts the bytes from the transmitted array to an integer. For example, calling a method with argument **{0xAA, 0xBB, 0xCC}** will return a number **0xAABBCC**
 
 
-Дополнения библиотеки filesystem (OpenOS)
+Filesystem (OpenOS) library additions
 ======
 
 filesystem.**extension**( path ): *string* result
 -----------------------------------------------------------
-| Тип | Аргумент | Описание |
+| Type | Parameter | Description |
 | ------ | ------ | ------ |
-| *string* | path | Путь к файлу, расширение которого необходимо получить |
+| *string* | path | he path to the file, the extension of which must be obtained |
 
-Метод возвращает строковое расширение файла по указанному пути. К примеру, для файла **/Test/HelloWorld.lua** будет возвращена строка **.lua**
+The method returns a string extension of the file along the specified path. For example, for the file **/Test/HelloWorld.lua** the string *.lua* will be returned
 
 filesystem.**hideExtension**( path ): *string* result
 -----------------------------------------------------------
-| Тип | Аргумент | Описание |
+| Type | Parameter | Description |
 | ------ | ------ | ------ |
-| *string* | path | Путь к файлу, расширение которого необходимо скрыть |
+| *string* | path | The path to the file whose extension you want to hide |
 
-Метод скрывает расширение файла по указанному пути (если оно имеется) и возвращает строковый результат. К примеру, для файла **/Test/HelloWorld.lua** будет возвращена строка **/Test/HelloWorld**
+The method hides the file extension on the specified path (if it exists) and returns a string result. For example, for the file **/Test/HelloWorld.lua** a string **/Test/HelloWorld** will be returned
 
 filesystem.**isFileHidden**( path ): *boolean* result
 -----------------------------------------------------------
-| Тип | Аргумент | Описание |
+| Type | Parameter | Description |
 | ------ | ------ | ------ |
-| *string* | path | Путь к файлу, скрытость которого необходимо проверить |
+| *string* | path | The path to the file, the hidden state of which must be checked |
 
-Метод проверяет, является ли файл скрытым (т.е. начинается ли его название с символа "**.**") и возвращает результат. К примеру, для файла **/Test/.Hello.lua** будет возвращено **true**
+The method checks whether the file is hidden (i.e.whether its name starts with the dot symbol) and returns the result. For example, for the file **/Test/.Hello.lua** a **true** will be returned
 
 filesystem.**sortedList**(path, sortingMethod, [ showHiddenFiles, filenameMatcher, filenameMatcherCaseSensitive ] ): *table* fileList
 -----------------------------------------------------------
-| Тип | Аргумент | Описание |
+| Type | Parameter | Description |
 | ------ | ------ | ------ |
-| *string* | path | Путь к директории, список файлов которой необходимо получить |
-| *string* | sortingMethod | Метод сортировки файлов. Может принимать значения **name**, **type** и **date** |
-| *boolean* | showHiddenFiles | Опциональный аргумент, отвечающий за включение в список скрытых файлов. По умолчанию имеет значение false |
-| *string* | filenameMatcher | Опциональный аргумент, представляющий из себя регулярное выражение, по которому будут отсекаться файлы из списка. К примеру, выражение "**%d+%.lua**" будет включать в список только файлы с расширением **.lua** и имеющие в название исключительно цифры |
-| *string* | filenameMatcherCaseSensitive | Опциональный аргумент, позволяющий игнорировать регистр символов при использовании аргумента **filenameMatcher** |
+| *string* | path | The path to the directory, the list of files that need to be obtained |
+| *string* | sortingMethod | Sorting method can take values **name**, **type** and **date**|
+| [*boolean* | showHiddenFiles] | Optional argument, which is responsible for including hidden files in the list. The default value is **false** |
+| [*string* | filenameMatcher] | An optional argument that represents a regular expression, by which files from the list will be searched. For example, the expression "**%d+%.lua**" will only include files with the extension **.lua ** and having only digits in the name |
+| [*string* | filenameMatcherCaseSensitive] | Optional argument, which allows to ignore the case of characters when using the argument **filenameMatcher** |
 
-Метод получает список файлов из указанной директории в соответствии с переданными условиями, сортируя их определенным методом. Возвращаемый результат представляет собой классическую нумерически индексированную таблицу:
+The method gets a list of files from the specified directory, sorting them by a certain method. The returned result is a classical numerically indexed table:
 
 ```lua
 {
@@ -397,11 +366,10 @@ filesystem.**sortedList**(path, sortingMethod, [ showHiddenFiles, filenameMatche
 }
 ```
 
-
 filesystem.**readUnicodeChar**( fileHandle ): *string* char
 -----------------------------------------------------------
-| Тип | Аргумент | Описание |
+| Type | Parameter | Description |
 | ------ | ------ | ------ |
-| *handle* | fileHandle | Открытый файловый дескриптор в бинарном режиме (**rb**) |
+| *handle* | fileHandle | Opened file descriptor in binary read mode (**rb**) |
 
-Метод читает из файлового дескриптора юникод-символ, используя бинарные операции. Поскольку "чистый" Lua не позволяет работать с юникод-символами при чтении файлов в текстовом режиме, то этот метод крайне полезен при написании собственных форматов данных. Отмечу, что для успешного чтения вы должны быть уверены, что читаемые байт-последовательности из дескриптора **гарантированно** соответствует какому-либо юникод-символу
+The method reads a unicode character from the file descriptor, using binary operations. Since the "clean" Lua does not allow working with unicode characters when reading files in text mode, this method is extremely useful when writing your own file formats. You should be sure that the next byte-sequence from file handle **is guaranteed** corresponds to unicode character

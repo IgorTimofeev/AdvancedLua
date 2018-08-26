@@ -376,17 +376,18 @@ end
 function table.fromFile(path)
 	checkArg(1, path, "string")
 	
-	if filesystem.exists(path) then
-		if filesystem.isDirectory(path) then
-			error("\"" .. path .. "\" is a directory")
-		else
-			local file = io.open(path, "r")
-			local data = table.unserialize(file:read("*a"))
-			file:close()
+	local file, reason = io.open(path, "r")
+	if file then
+		local data, reason = table.unserialize(file:read("*a"))
+		file:close()
+
+		if data then
 			return data
+		else
+			error("Failed to unserialize file \"" .. path .. "\": " .. tostring(reason))
 		end
 	else
-		error("\"" .. path .. "\" doesn't exists")
+		error("Failed to open file \"" .. path .. "\" for reading: " .. tostring(reason))
 	end
 end
 
@@ -563,5 +564,3 @@ end
 ----------------------------------------------------------------------------------------------------
 
 return {loaded = true}
-
-

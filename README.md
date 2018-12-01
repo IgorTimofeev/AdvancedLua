@@ -15,7 +15,7 @@ AdvancedLua is a library that forfills default Lua and OpenOS libraries with mis
 Installation
 ======
 
-Source code is available [here](https://github.com/IgorTimofeev/AdvancedLua/blob/master/lib/AdvancedLua.lua): You can download library to computer via single command:
+Source code is available [here](https://github.com/IgorTimofeev/AdvancedLua/blob/master/AdvancedLua.lua): You can download library to computer via single command:
 
     wget https://github.com/IgorTimofeev/AdvancedLua/blob/master/lib/AdvancedLua.lua /lib/advancedLua.lua -f
 
